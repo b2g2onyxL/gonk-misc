@@ -22,9 +22,17 @@ PRODUCT_PACKAGES += \
 	rilproxy \
 	sensorsd \
 	oom-msg-logger \
+	gaia \
+	gecko \
+	node \
 	$(NULL)
-#	gaia \
-#	gecko \
+
+# List NPM packages below. Downloading these packages will require
+# a network connection at build time.
+ PRODUCT_PACKAGES += \
+	socket.io \
+	$(NULL)
+
 
 ifneq ($(filter-out 0 1 2 3 4,$(MAJOR_VERSION)),)
 BOARD_SEPOLICY_DIRS += \
