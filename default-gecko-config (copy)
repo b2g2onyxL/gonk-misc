@@ -1,0 +1,108 @@
+. "$topsrcdir/b2g/config/mozconfigs/common"
+
+if [ "$TARGET_BUILD_VARIANT" != "user" ] ; then
+ENABLE_MARIONETTE=1
+ENABLE_TESTS=1
+fi
+
+mk_add_options MOZ_OBJDIR="$GECKO_OBJDIR"
+
+if [ "$TARGET_ARCH" = "x86" ]; then
+ac_add_options --target=i686-linux-android
+elif [ "$TARGET_ARCH" = "arm64" ]; then
+ac_add_options --target=aarch64-linux-android
+else
+ac_add_options --target=arm-linux-androideabi
+fi
+
+ac_add_options --with-gonk="$GONK_PATH"
+
+ac_add_options --enable-application=b2g
+
+# Follow the section 'Bootstrap dependencies' at
+#
+#  https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Simple_Firefox_for_Android_build
+#
+# for installing the Android NDK. Choose 'Firefox for Android' at the
+# prompt. Alternatively, you can also download the NDK manually and set
+# the shell variable B2G_ANDROID_NDK_PATH to the NDK's directory.
+
+B2G_ANDROID_NDK_PATH=${B2G_ANDROID_NDK_PATH:="$HOME/.mozbuild/android-ndk-r11b"}
+ac_add_options --with-android-ndk="${B2G_ANDROID_NDK_PATH}"
+
+ac_add_options --with-android-version=$PLATFORM_SDK_VERSION
+#ac_add_options --with-android-version=23
+ac_add_options --enable-debug-symbols
+if [ "${B2G_DEBUG:-0}" != "0" ]; then
+ac_add_options --enable-debug
+fi
+
+if [ "${B2G_NOOPT:-0}" != "0" ]; then
+ac_add_options --disable-optimize
+fi
+
+if [ "${B2G_DUMP_PAINTING:-0}" != "0" ]; then
+ac_add_options --enable-dump-painting
+fi
+
+ac_add_options --with-ccache
+
+if [ "${DISABLE_JEMALLOC:-0}" != "0" ] ||
+   [ "${PLATFORM_SDK_VERSION:-0}" -ge "22" -a "$MALLOC_IMPL" != "dlmalloc" ]; then
+ac_add_options --disable-jemalloc
+fi
+
+ac_add_options --disable-printing
+
+if [ "${B2G_VALGRIND:-0}" != "0" ]; then
+ac_add_options --enable-valgrind
+ac_add_options --enable-profiling
+fi
+
+if [ "${B2G_PROFILING:-0}" != "0" ]; then
+ac_add_options --enable-profiling
+fi
+
+ac_add_options --disable-crashreporter
+
+if [ "${B2G_UPDATER:-0}" != "0" ]; then
+  # Note: if B2G_UPDATE_CHANNEL isn't set, then configure will use its own
+  # default, which is "default".
+  ac_add_options --enable-updater
+  ac_add_options --enable-update-channel="${B2G_UPDATE_CHANNEL}"
+fi
+
+# Enable dump() from JS.
+export CXXFLAGS="-DMOZ_ENABLE_JS_DUMP $EXTRA_INCLUDE ${CXXFLAGS}"
+
+# In order to support x86 64bis, Google change x86 toolchain from lollipop.
+# Prefix was changed from i686-linux-android to x86_64-linux-android
+# Add "-m32" to build x86 32bits
+if [ "$TARGET_ARCH" = "x86" ]; then
+  case "$GECKO_TOOLS_PREFIX" in
+  *x86_64-linux-android-*)
+    export CFLAGS="-m32 ${CFLAGS}"
+    export CXXFLAGS="-m32 ${CXXFLAGS}"
+    export LDFLAGS="-m32 ${LDFLAGS}"
+    export ASFLAGS="-m32 ${ASFLAGS}"
+    ;;
+  esac
+fi
+
+ac_add_options --with-fpu="$ARCH_ARM_VFP"
+
+if [ "${MOZ_DMD:-0}" != 0 ]; then
+  ac_add_options --enable-dmd
+fi
+
+if [ "${ENABLE_GLOBAL_PRELINK:-0}" != 0 ]; then
+# Disable ELF_HACK on B2G for prelink.
+ac_add_options --disable-elf-hack
+fi
+
+if [ "$TARGET_BUILD_VARIANT" = eng ]; then
+  # bug 979947 - Engineering builds should have
+  # the profiler enabled by default
+  ac_add_options --enable-profiling
+fi
+. "$topsrcdir/b2g/config/mozconfigs/common.override"

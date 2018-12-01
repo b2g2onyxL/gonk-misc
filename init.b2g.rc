@@ -1,0 +1,50 @@
+
+import /init.bluetooth.rc
+
+service gonksched /system/bin/gonksched
+    class main
+    user root
+
+service fakeappops /system/bin/fakeappops
+    class main
+    user root
+
+service b2g /system/bin/b2g.sh
+    class main
+    onrestart restart media
+
+service rilproxy /system/bin/rilproxy
+    class main
+    socket rilproxy stream 660 radio radio
+    user radio
+    group radio system
+
+service nfcd /system/bin/nfcd
+    class main
+    user nfc
+    group system
+    disabled
+    oneshot
+
+service sensorsd /system/bin/sensorsd
+    class main
+    user system
+    group system input
+    disabled
+    oneshot
+
+on boot
+    exec /system/bin/rm -r /data/local/tmp
+    exec /system/bin/mkdir -p /data/local/tmp
+    # set RLIMIT_NOFILE to increase soft limit from 1024(default) to 2048.
+    # Hard limit keeps default value(4096).
+    setrlimit 7 2048 4096
+    write /proc/sys/net/ipv6/conf/default/use_tempaddr 2
+
+service httpd /system/bin/nginx
+    class main
+    user root
+    disabled
+
+on property:ro.moz.httpd=1
+    start httpd
