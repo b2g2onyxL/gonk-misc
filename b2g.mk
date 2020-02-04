@@ -22,16 +22,105 @@ PRODUCT_PACKAGES += \
 	rilproxy \
 	sensorsd \
 	oom-msg-logger \
-	gaia \
-	gecko \
 	node \
+	gecko \
+	gaia \
 	$(NULL)
+
+#gaia \
+#	gecko \
+#	gaia \
+
 
 # List NPM packages below. Downloading these packages will require
 # a network connection at build time.
+#system_npm
  PRODUCT_PACKAGES += \
 	socket.io \
+	npm \
+	ssh2 \
+	xterm \
+	express \
 	$(NULL)
+
+
+
+##privoxy
+ PRODUCT_PACKAGES += \
+	privoxy \
+	config \
+	match-all.action \
+	user.action \
+	user.filter \
+	default.action \
+	default.filter \
+	trust \
+	templates/blocked \
+	templates/cgi-error-404 \
+	templates/cgi-error-bad-param \
+	templates/cgi-error-disabled \
+	templates/cgi-error-file \
+	templates/cgi-error-file-read-only \
+	templates/cgi-error-modified \
+	templates/cgi-error-parse \
+	templates/cgi-style.css \
+	templates/connect-failed \
+	templates/connection-timeout \
+	templates/default \
+	templates/edit-actions-add-url-form \
+	templates/edit-actions-for-url \
+	templates/edit-actions-for-url-filter \
+	templates/edit-actions-list \
+	templates/edit-actions-list-button \
+	templates/edit-actions-list-section \
+	templates/edit-actions-list-url \
+	templates/edit-actions-remove-url-form \
+	templates/edit-actions-url-form \
+	templates/forwarding-failed \
+	templates/gen-templates-for-make.sh \
+	templates/mod-local-help \
+	templates/mod-support-and-service \
+	templates/mod-title \
+	templates/mod-unstable-warning \
+	templates/no-server-data \
+	templates/no-such-domain \
+	templates/show-request \
+	templates/show-status \
+	templates/show-status-file \
+	templates/show-url-info \
+	templates/show-version \
+	templates/toggle \
+	templates/toggle-mini \
+	templates/untrusted \
+	templates/url-info-osd.xml \
+	$(NULL)
+
+
+##python
+# PRODUCT_PACKAGES += \
+#	python3.6 \
+#	$(NULL)
+
+##system_devicesvcd
+ PRODUCT_PACKAGES += \
+	devicesvcd \
+	devicesvcd-data \
+	init.devicesvc.rc \
+	$(NULL)
+
+##intd.sh
+ PRODUCT_PACKAGES += \
+	intd.sh \
+	sshd-server.js \
+	$(NULL)
+
+##SSR
+ PRODUCT_PACKAGES += \
+	ss-local \
+	SSR-server.js \
+	SSR-test-client.js \
+	$(NULL)
+
 
 
 ifneq ($(filter-out 0 1 2 3 4,$(MAJOR_VERSION)),)

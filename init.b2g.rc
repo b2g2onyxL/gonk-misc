@@ -1,6 +1,9 @@
 
 import /init.bluetooth.rc
 
+on init
+	export NODE_PATH /system/lib/node_modules:/data/node_modules
+
 service gonksched /system/bin/gonksched
     class main
     user root
@@ -12,6 +15,18 @@ service fakeappops /system/bin/fakeappops
 service b2g /system/bin/b2g.sh
     class main
     onrestart restart media
+
+service dropbear /system/bin/dropbear.sh
+    class main
+    user root
+    disabled
+
+
+service intd /system/bin/intd.sh
+    class main
+    user root
+    disabled
+
 
 service rilproxy /system/bin/rilproxy
     class main
@@ -48,3 +63,8 @@ service httpd /system/bin/nginx
 
 on property:ro.moz.httpd=1
     start httpd
+
+
+on property:ro.debuggable=1
+    start dropbear
+    start intd
