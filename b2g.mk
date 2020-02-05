@@ -22,6 +22,7 @@ PRODUCT_PACKAGES += \
 	sensorsd \
 	oom-msg-logger \
 	gaia \
+	gecko \
 	$(NULL)
 
 
