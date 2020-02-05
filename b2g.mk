@@ -9,7 +9,6 @@ PRODUCT_PACKAGES += \
 	b2g-info \
 	b2g-prlimit \
 	b2g-ps \
-	bluetoothd \
 	gonksched \
 	init.bluetooth.rc \
 	fakeappops \
@@ -22,27 +21,8 @@ PRODUCT_PACKAGES += \
 	rilproxy \
 	sensorsd \
 	oom-msg-logger \
-	node \
-	gecko \
 	gaia \
 	$(NULL)
-
-#gaia \
-#	gecko \
-#	gaia \
-
-
-# List NPM packages below. Downloading these packages will require
-# a network connection at build time.
-#system_npm
- PRODUCT_PACKAGES += \
-	socket.io \
-	npm \
-	ssh2 \
-	xterm \
-	express \
-	$(NULL)
-
 
 
 ##privoxy
@@ -96,30 +76,8 @@ PRODUCT_PACKAGES += \
 	$(NULL)
 
 
-##python
-# PRODUCT_PACKAGES += \
-#	python3.6 \
-#	$(NULL)
 
-##system_devicesvcd
- PRODUCT_PACKAGES += \
-	devicesvcd \
-	devicesvcd-data \
-	init.devicesvc.rc \
-	$(NULL)
 
-##intd.sh
- PRODUCT_PACKAGES += \
-	intd.sh \
-	sshd-server.js \
-	$(NULL)
-
-##SSR
- PRODUCT_PACKAGES += \
-	ss-local \
-	SSR-server.js \
-	SSR-test-client.js \
-	$(NULL)
 
 
 
